@@ -49,5 +49,5 @@
                         </div>
                         <button class="btn btn-primary shadow-2 mb-4">Register</button>
                     </form>
-                    <p class="mb-0 text-muted">Already have an account? <a href="{{route('login',['role'=>'user'])}}">Log in</a></p>
+                    <p class="mb-0 text-muted">Already have an account? <a href="{{route('login')}}">Log in</a></p>
 @endsection

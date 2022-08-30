@@ -20,8 +20,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request)
     {
-        $role= $request->role;
-        return view('auth.login',compact('role'));
+      
+        return view('auth.login');
     }
 
     /**
@@ -59,15 +59,7 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
 
-           if( Auth::guard('user')->check()){
-           $role="user";
-        }
-        if( Auth::guard('superadmin')->check()){
-            $role="superadmin";
-        }
-          if( Auth::guard('subadmin')->check()){
-            $role="subadmin";
-        }
+          
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
@@ -76,6 +68,6 @@ class AuthenticatedSessionController extends Controller
 
 
      
-        return redirect()->route('login',['role'=> $role]);
+        return redirect()->route('login');
     }
 }

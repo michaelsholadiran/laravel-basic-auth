@@ -19,22 +19,6 @@
 <body>
     <div class="wrapper">
         <div class="auth-content">
-            @if (request()->role)
-                
-           
-            <div class="text-center">
-                <a href="{{route('login',['role'=>'superadmin'])}}" class="btn btn-outline-info mb-2 {{request()->role=='superadmin'?
-                    "active":""
-                }}">Super Admin</a>
-                <a href="{{route('login',['role'=>'subadmin'])}}" class="btn btn-outline-info mb-2  {{request()->role=='subadmin'?
-                    "active":""
-                }}">Sub Admin</a>
-                <a href="{{route('login',['role'=>'user'])}}" class="btn btn-outline-info mb-2  {{request()->role=='user'?
-                    "active":""
-                }}">User</a>
-             
-            </div>
-             @endif
             <div class="card">
                 <div class="card-body text-center">
                    @yield('content')

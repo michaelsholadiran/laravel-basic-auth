@@ -31,7 +31,7 @@ Route::get('/', function () {
 Route::middleware(['guest','guest:superadmin','guest:subadmin','guest:user'])->group(function () {
 Route::controller(AuthenticatedSessionController::class)->prefix('/')->group(function () {
 
-Route::get('/{role}/login', 'create')->whereIn('role',['superadmin','subadmin','user'])->name('login');
+Route::get('/login', 'create')->name('login');
 Route::post('login', 'store')->name('login.store');
 });
 
