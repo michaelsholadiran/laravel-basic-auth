@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\SubAdmin;
+namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Todo;
+
 
 use App\Models\User;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class DashboardController extends Controller
+class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +18,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
-        $superadmin= User::where('role','superadmin')->latest()->get();
-        $subadmin= User::where('role','subadmin')->latest()->get();
-        $user= User::where('role','user')->latest()->get();
-
-
-          return view('subadmin.dashboard.index',compact('superadmin','subadmin','user'));
+        //
     }
 
     /**
@@ -32,7 +28,7 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.todo.create');
     }
 
     /**
@@ -43,7 +39,18 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'date' => ['required']
+        ]);
+
+        $todo = new Todo;
+        $todo->title = $request->title;
+        $todo->date = $request->date;
+        $todo->user_id = auth()->user()->id;
+        $todo->save();
+
+        return back()->with(['status'=>1]);
     }
 
     /**
@@ -54,7 +61,7 @@ class DashboardController extends Controller
      */
     public function show($id)
     {
-        //
+    //
     }
 
     /**
@@ -65,7 +72,8 @@ class DashboardController extends Controller
      */
     public function edit($id)
     {
-        //
+         $todo=Todo::where(['user_id'=>auth()->user()->id,'id'=>$id])->first();
+        return view('user.todo.edit',compact('todo'));
     }
 
     /**
@@ -77,7 +85,17 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'date' => ['required']
+        ]);
+
+        $todo = Todo::find($id);
+        $todo->title = $request->title;
+        $todo->date = $request->date;
+        $todo->save();
+
+        return back()->with(['status'=>1]);
     }
 
     /**
@@ -88,6 +106,9 @@ class DashboardController extends Controller
      */
     public function destroy($id)
     {
-        //
+             Todo::find($id)->delete();
+        
+
+         return back()->with(['status'=>1]);
     }
 }

@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\SubAdmin;
+namespace App\Http\Controllers\SuperAdmin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Todo;
+
 
 use App\Models\User;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class DashboardController extends Controller
+class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +18,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
-        $superadmin= User::where('role','superadmin')->latest()->get();
-        $subadmin= User::where('role','subadmin')->latest()->get();
-        $user= User::where('role','user')->latest()->get();
-
-
-          return view('subadmin.dashboard.index',compact('superadmin','subadmin','user'));
+        //
     }
 
     /**
@@ -54,7 +50,10 @@ class DashboardController extends Controller
      */
     public function show($id)
     {
-        //
+    
+         $list= Todo::where('user_id',$id)->get();
+         $user= User::find($id);
+        return view('superadmin.todo.show',compact('list','user'));
     }
 
     /**

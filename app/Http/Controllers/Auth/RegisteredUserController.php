@@ -50,6 +50,7 @@ class RegisteredUserController extends Controller
             $extension = $request->photo->extension();
             $path = $request->photo->store('images/users','public');
         }
+        
   $role=strtolower($request->role);
         $user = User::create([
             'name' => $request->name,

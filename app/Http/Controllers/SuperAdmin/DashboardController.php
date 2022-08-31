@@ -5,6 +5,8 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\User;
+
 class DashboardController extends Controller
 {
     /**
@@ -14,7 +16,13 @@ class DashboardController extends Controller
      */
     public function index()
     {
-          return view('superadmin.dashboard.index');
+
+        $superadmin= User::where('role','superadmin')->latest()->get();
+        $subadmin= User::where('role','subadmin')->latest()->get();
+        $user= User::where('role','user')->latest()->get();
+
+
+          return view('superadmin.dashboard.index',compact('superadmin','subadmin','user'));
     }
 
     /**

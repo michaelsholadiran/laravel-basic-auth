@@ -17,17 +17,23 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
-
-use App\Http\Controllers\User\DashboardController as UserDashboardController;
+//Super Admin
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
+use App\Http\Controllers\SuperAdmin\AccountController as SuperAdminAccountController;
+use App\Http\Controllers\SuperAdmin\TodoController as SuperAdminTodoController;
+
+// SubAdmin
 use App\Http\Controllers\SubAdmin\DashboardController as SubAdminDashboardController;
+use App\Http\Controllers\SubAdmin\UserController as SubAdminUserController;
+use App\Http\Controllers\SubAdmin\AccountController as SubAdminAccountController;
+use App\Http\Controllers\SubAdmin\TodoController as SubAdminTodoController;
 
-Route::get('/', function () {
-    return view('admin.dashboard.index');
-});
+// User
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\AccountController as UserAccountController;
+use App\Http\Controllers\User\TodoController as UserTodoController;
 
-
-// Route::middleware(['auth','verified'])->prefix('admin/')->name('backend.')->group(function () {
 Route::middleware(['guest','guest:superadmin','guest:subadmin','guest:user'])->group(function () {
 Route::controller(AuthenticatedSessionController::class)->prefix('/')->group(function () {
 
@@ -40,17 +46,26 @@ Route::get('/register', 'create');
 Route::post('/register', 'store')->name('.store');
 });
 });
+
 //this should have auth middleware for respective guards
 Route::get('logout',[AuthenticatedSessionController::class,'destroy'])->name('logout');
 
 Route::middleware(['auth:user'])->prefix('user')->name('user.')->group(function () {
  Route::resource('dashboard', UserDashboardController::class);
+ Route::resource('todo', UserTodoController::class);
+ Route::resource('account', UserAccountController::class);
 });
 
 Route::middleware(['auth:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
  Route::resource('dashboard', SuperAdminDashboardController::class);
+ Route::resource('user', SuperAdminUserController::class);
+ Route::resource('todo', SuperAdminTodoController::class);
+ Route::resource('account', SuperAdminAccountController::class);
 });
 
 Route::middleware(['auth:subadmin'])->prefix('subadmin')->name('subadmin.')->group(function () {
  Route::resource('dashboard', SubAdminDashboardController::class);
+ Route::resource('user', SubAdminUserController::class);
+ Route::resource('todo', SubAdminTodoController::class);
+ Route::resource('account', SubAdminAccountController::class);
 });
